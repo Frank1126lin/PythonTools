@@ -1,2 +1,1 @@
-# 4DS
-Python3 for Data Science
+# python3 for practice

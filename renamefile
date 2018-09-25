@@ -25,7 +25,6 @@ def file_type(file):
     #print(filename,filetype)
     return filetype
 
-
 #3.主函数:查找目标目录下的所有文件,并使用MD5值及后缀名重命名当前文件
 #如遇到重复文件,使用数字重命名
 def main(path):
@@ -47,8 +46,6 @@ def main(path):
                 os.rename(os.path.join(path,file),os.path.join(path,nickname))
     print(winerror)
     print(len(winerror))
-
-
 
 #4.执行
 path = r'D:\iPhoneshowdup\nameduplicate'

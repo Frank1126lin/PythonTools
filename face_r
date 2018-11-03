@@ -1,0 +1,59 @@
+#!/usr/bin/env python37
+# -*- coding: utf-8 -*-
+#@File  : face_recogn.py
+#@Author: Frank
+#@Date  : 11/1/18
+import os
+import face_recognition
+import shutil
+import time
+
+
+#遍历文件夹和文件，找到所有的文件（迭代目录，返回文件）
+#判断文件是不是图片，JPG格式，如果是，返回图片文件，如果不是，跳过
+'''
+input : path
+return: file
+'''
+def osw(path):
+	filetype = ['JPG','Jpg','jpg']
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			if file.split('.')[-1] in filetype:
+				yield os.path.join(path,file)
+			else:
+				pass
+		for dir in dirs:
+			return osw(dir)
+
+
+
+#主函数main（）
+def main(basepic,targetpath,unknownpath):
+	print('Now the known pic is :', basepic)
+	pic_of_target = face_recognition.load_image_file(basepic)
+	known_face_encoding = face_recognition.face_encodings(pic_of_target)
+	print(known_face_encoding)
+
+	for filepath in osw(unknownpath):
+		print(filepath)
+		unknown_pic = face_recognition.load_image_file(filepath)
+		try:
+			unknown_face_encoding = face_recognition.face_encodings(unknown_pic)[0]
+			print(unknown_face_encoding)
+			results = face_recognition.compare_faces([known_face_encoding], unknown_face_encoding)
+			print(results[0])
+			if results[0] == True:
+				print('Now moving file from {0} to {1}'.format(filepath, targetpath))
+				shutil.move(filepath, targetpath)
+			else:
+				pass
+		except IndexError:
+			print('no face')
+
+
+targetpath = '/home/frank/Documents/dayue'
+unknownpath = '/home/frank/Documents/New Folder'
+basepic = '/home/frank/Documents/known/dayueyue.jpg'
+if __name__ == '__main__':
+	main(basepic,targetpath,unknownpath)

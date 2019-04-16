@@ -1,0 +1,136 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+# @File  : card_tools.py
+# @Author: Frank
+# @Date  : 4/13/19
+
+# 在跟着老师做名片管理的工具的时候,遇到的比较神奇的一个操作deal_card
+
+
+# 定义初始名片空列表
+card_list = []
+
+
+# show menu
+def show_menu():
+    print("*" * 50)
+    print("欢迎使用名片管理系统v1.0")
+    print('')
+    print("1.新增名片")
+    print("2.显示全部")
+    print("3.查询名片")
+    print("")
+    print("0.退出系统")
+    print("*"*50)
+
+
+def new_card():
+
+    """新增名片"""
+
+    print("-"*50)
+    print("新增名片")
+
+    # 1.提示用户输入名片的详细信息
+
+    name_str = input("请输入姓名：")
+    phone_str = input("请输入电话：")
+    email_str = input("请输入邮箱：")
+
+    # 2.使用用户输入的信息建立一个名片字典
+
+    card_dict = {"name": name_str,
+                 "phone": phone_str,
+                 "email": email_str,
+                 }
+
+    # 3.将名片字典添加到列表中
+
+    card_list.append(card_dict)
+    print(card_list)
+
+    # 4.提示用户添加名片成功
+
+    print("添加%s名片成功！" % name_str)
+
+
+def show_all():
+    """显示所有名片"""
+    print("-" * 50)
+    print("显示所有名片")
+    # 如果列表为空，提示用户无记录
+    if len(card_list) == 0:
+        print("提示用户没有名片记录，请输入【１】新建名片！")
+        return
+
+    # 打印表头
+    for name in ["姓名", "电话", "邮箱", ]:
+        print(name, end="\t\t")
+    print("\n")
+    # 遍历所有名片
+    for card_dict in card_list:
+        print("%s\t\t%s\t\t%s" % (card_dict["name"],
+                                  card_dict["phone"],
+                                  card_dict["email"],))
+
+
+def search_card():
+
+    """搜索名片"""
+    print("-" * 50)
+    print("搜索名片")
+    # 1.提示用户输入要搜索的姓名
+    find_name = input("请输入要搜索的姓名：")
+    # 2.遍历名片列表，查询要搜索的姓名，如果没有，提示用户
+    for card_dict in card_list:
+
+        if card_dict["name"] == find_name:
+            print("姓名\t\t电话\t\t邮箱")
+            print("="*50)
+            print("%s\t\t%s\t\t%s"%(card_dict["name"],
+                                    card_dict["phone"],
+                                    card_dict["email"],))
+            break
+    else:
+        print("抱歉，没有找到！")
+
+def deal_card(find_name):
+    """
+    名片处理
+    :param find_name: 名片名称
+    """
+    print(find_name)
+
+    action_str = input("请选择要执行的操作"
+                       "[1] 修改 [2] 删除 [0] 返回上级菜单")
+    if action_str == "1":
+        find_name["name"] = input_card_info(find_name["name"], "姓名:")
+        find_name["phton"] = input_card_info(find_name["phton"], "电话")
+        find_name["email"] = input_card_info(find_name["email"], "邮箱:")
+
+        print("修改名片成功!")
+
+    elif action_str == "2":
+
+        card_list.remove(search_card)
+
+        print("删除名片")
+
+
+def input_card_info(dict_value, tip_message):
+    """
+    输入名片信息
+    :param dict_value: 字典中原有的值
+    :param tip_message: 用户输入内容
+    :return: 如果用户有输入内容,则返回输入内容
+    否则,返回字典原有值
+    """
+    # 1.提示用户输入内容
+    result_str = input(tip_message)
+    # 2. 针对用户输的内容进行判断,如果用户输入了内容,直接返回结果
+    if len(result_str) > 0:
+        return result_str
+    # 3.如果用户没有输入内容,返回 字典中原有的值
+    else:
+        return dict_value
+

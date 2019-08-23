@@ -1,0 +1,26 @@
+#! /usr/bin/env python3
+# *_* coding: utf-8 *_*
+# @File  : file_walk.py
+# @Author: Frank1126lin
+# @Date  : 2019/8/23
+
+import os
+
+BASEDIR = 'D:\APP'  # 目标目录
+
+
+def oswf(path):
+    """
+
+    :param path: 定义需要遍历的目录路径
+    :return: 迭代器，返回当前目录下所有的文件及子文件
+    """
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            yield os.path.join(root, file)
+        for dir in dirs:
+            oswf(os.path.join(root, dir))
+
+
+for i in oswf(BASEDIR):
+    print(i)

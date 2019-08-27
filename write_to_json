@@ -1,0 +1,22 @@
+#! /usr/bin/env python3
+# *_* coding: utf-8 *_*
+# @File  : write_to_json.py
+# @Author: Frank1126lin
+# @Date  : 2019/8/27
+
+
+import json
+
+
+def write_to_json(content, file_name):
+    '''
+    写为json格式文件
+    :param content: 写入的内容,字典
+    :param file_name: 文件名，如result.txt
+    :return:
+    '''
+    with open(file_name,'a', encoding='utf-8') as f:
+        f.write(json.dumps(content, ensure_ascii=False,)+'\n')
+
+
+write_to_json({'name':'frank'},'file.txt')

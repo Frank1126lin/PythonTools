@@ -36,6 +36,10 @@ C. 元字符： 用于修饰原子的符号
     12. | :唯一一个逻辑运算符或（万能钥匙）
     13. ? :表示非贪婪模式匹配（正则默认是贪婪模式匹配）
     14. \ :转义字符，用于转义字符串
+    15. () :元字符，作用有三
+            A:将多个原子作为一个原子处理，方便使用元字符
+            B:将（）中的内容暂存于内存，方便后期调用
+            C:改变优先级，主要跟|配合
     
     
 """
@@ -102,15 +106,31 @@ C. 元字符： 用于修饰原子的符号
 # result = re.search('\$\d+', txt)
 # print(result.group())
 
+# 15. () :元字符，作用有三
+#             A：将多个原子作为一个原子处理，方便使用元字符
+# txt = 'Apple mamamamac is $3999'
+# result = re.search('(ma){3}', txt)
+# print(result.group())
+# B: 将（）中的内容暂存于内存，方便后期调用
+# txt = 'Apple mamamamac is $3999'
+# result = re.search('(ma){3}', txt)
+# print(result.groups())
+# C: 改变优先级，主要跟 | 配合
+# txt = 'Apple'
+txt = 'Abble'
+result = re.search('A(pp|bb)le', txt)
+print(result.group())
+
 '''
 函数
 '''
 # 1. complie函数：
-txt = 'The num is 30.04'
-txt_comp = re.compile(r'''
-    \d+  # 小数点前面的数字
-    \.?  # 小数点本身
-    \d*  # 小数点后面的数字
-    ''', re.VERBOSE)
-result = re.search(txt_comp, txt)
-print(result.group())
+# txt = 'The num is 30.04'
+# txt_comp = re.compile(r'''
+#     \d+  # 小数点前面的数字
+#     \.?  # 小数点本身
+#     \d*  # 小数点后面的数字
+#     ''', re.VERBOSE)
+# result = re.search(txt_comp, txt)
+# print(result.group())
+

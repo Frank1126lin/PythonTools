@@ -1,0 +1,53 @@
+# /usr/bin/python3
+# conding:utf-8
+import time
+import os
+import shutil
+# 1. 把时间转换为年；
+def TimeToY(timestamp):
+    Ytime = time.localtime(timestamp)
+    return time.strftime('%Y-%m',Ytime)
+    
+# 2. 获取文件的创建年
+def GetFileYtime(filePath):
+    AllTime = os.path.getctime(filePath)
+    return TimeToY(AllTime)
+    
+# 2.1 测试文件 含泪告诉你，这里不能用Windows的反斜杠
+# path="./2019-1.jpg"
+# print(GetFileYtime(path))
+
+# 3. 遍历文件夹，得到文件地址
+def oswf(path):
+    """
+    :param path: 定义需要遍历的目录路径
+    :return: 迭代器，返回当前目录下所有的文件及子文件
+    """
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            yield os.path.join(root, file)
+        for dir in dirs:
+            oswf(os.path.join(root, dir))
+  
+# 4. 输入文件地址信息，返回文件类型
+def file_type(file):
+    filetype = file.split('.')[-1]
+    #print(filename,filetype)
+    return filetype
+   
+# print(file_type('./2019--1.jpg'))
+# 3. 遍历文件夹内文件和子文件，读取文件的创建时间，将文件按创建年重新命名
+
+def main(path):
+    i = 1
+    for file in oswf(path):
+        ytime = GetFileYtime(file)
+        newname = str(ytime)+'-'+'0'+str(i)+'.'+file_type(file)
+        print("Newname:", newname)
+        print("Renaming:",file,"to",newname)
+        os.rename(file,os.path.join(path,newname))
+        i+=1
+        
+if "__name__" == "__main__":
+    path = './TBH'
+    main(path)
